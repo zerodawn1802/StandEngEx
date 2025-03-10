@@ -98,14 +98,14 @@ def extract_questions_with_clean_sections(doc_path):
             
             # Start a new question and reset answers
             current_question = question_match.group(1)
-            if 1 <= int(current_question) <= 22:
+            if 1 <= int(current_question) <= 40:
                 question_types[current_question] = "TN"
-            elif 23 <= int(current_question) <= 26:
-                question_types[current_question] = "ĐS"
-            elif 27 <= int(current_question) <= 28:
-                question_types[current_question] = "TN"
-            elif 29 <= int(current_question) <= 40:
-                question_types[current_question] = "Điền"
+            # elif 23 <= int(current_question) <= 26:
+            #     question_types[current_question] = "ĐS"
+            # elif 27 <= int(current_question) <= 28:
+            #     question_types[current_question] = "TN"
+            # elif 29 <= int(current_question) <= 40:
+            #     question_types[current_question] = "Điền"
             formatted_question = "".join([get_formatted_text(run) for run in para.runs])  # Get formatted question text
             current_answers = [formatted_question]  # Include the formatted question
 
@@ -197,33 +197,34 @@ def insert_images_into_docx(input_docx, output_docx, image_folder):
 
 # Chạy hàm và hiển thị kết quả
 img_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\images"  # Đường dẫn file DOCX chứa hình ảnh
-output_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\Đề 1 - Done.docx"  # Đường dẫn file đầu ra
-doc_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\Đề 1A.docx"  # Đường dẫn file tài liệu
+output_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\Đề 24 - Done.docx"  # Đường dẫn file đầu ra
+doc_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\Đề 24.docx"  # Đường dẫn file tài liệu
 tmp_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\tmp.docx"
-ans_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\ĐA đề 1A.docx"  # Đường dẫn file đáp án
+ans_path = r"C:\Users\Admin\Desktop\Maru\StandEngEx\ĐA Đề 24.docx"  # Đường dẫn file đáp án
 extract_images_from_docx(doc_path, img_path)
 # replace_images_with_text(doc_path, tmp_path)
 questions, question_types = extract_questions_with_clean_sections(doc_path)
 answers_in_table, answers, explains = extract_answers_and_explanations(ans_path)
 outputs = []
+# print(explains['5'])
 for i in range(1, 41):
     if(question_types[str(i)] == "TN"):
-        if(i < 23):
+        if(i < 41):
             outputs.append(f"{questions[str(i)]}\n")
             outputs.append("Lời giải\n")
             outputs.append(f"{ord(answers_in_table[i-1].split(' ')[1]) - ord('A') + 1}\n")
             outputs.append("####\n")
             if(i < 10):
-                outputs.append(f"{explains[str(i)][7:]}\n\n")
+                outputs.append(f"{explains[str(i)][5:]}\n\n")
             else:
-                outputs.append(f"{explains[str(i)][8:]}\n\n")
+                outputs.append(f"{explains[str(i)][6:]}\n\n")
             
         else:
             outputs.append(f"{questions[str(i)]}\n")
             outputs.append("Lời giải\n")
             outputs.append(f"{ord(answers[str(i)]) - ord('A') + 1}\n")
             outputs.append("####\n")
-            outputs.append(f"{explains[str(i)][8:]}\n\n")
+            outputs.append(f"{explains[str(i)][6:]}\n\n")
     elif(question_types[str(i)] == "ĐS"):
         outputs.append(f"{questions[str(i)]}\n")
         outputs.append("Lời giải\n")
